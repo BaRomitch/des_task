@@ -1,0 +1,41 @@
+name: Dockerrepo
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: docker build -t ghcr.io/baromitch/des_task .
+      - run: docker push ghcr.io/baromitch/des_task
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          to: 1311760114
+          token: 6727147312:AAGKoh6w8G_6A22b0sVxBc1TaNnlWTlrs00
+          
+          message: |
+           Работает
+            
+            Репоп ${{github.repository}}
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: docker run ghcr.io/baromitch/des_task
