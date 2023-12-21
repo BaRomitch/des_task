@@ -27,7 +27,7 @@ jobs:
           message: |
            Работает
             
-            Репоп ${{github.repository}}
+            Репозиторий ${{github.repository}}
   deploy:
     runs-on: ubuntu-latest
     needs: [build]
