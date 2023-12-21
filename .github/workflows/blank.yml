@@ -21,7 +21,7 @@ jobs:
       - name: send telegram message on push
         uses: appleboy/telegram-action@master
         with:
-          to: 1311760114
+          to: 444154605
           token: 6727147312:AAGKoh6w8G_6A22b0sVxBc1TaNnlWTlrs00
           
           message: |
